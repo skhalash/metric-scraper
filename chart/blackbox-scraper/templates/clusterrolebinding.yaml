@@ -1,0 +1,16 @@
+{{- if .Values.serviceAccount.create -}}
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: {{ include "blackbox-scraper.fullname" . }}
+  labels:
+    {{- include "blackbox-scraper.labels" . | nindent 4 }}
+subjects:
+- kind: ServiceAccount
+  name: {{ include "blackbox-scraper.serviceAccountName" . }}
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  kind: ClusterRole
+  name: {{ include "blackbox-scraper.fullname" . }}
+  apiGroup: rbac.authorization.k8s.io
+{{- end }}
